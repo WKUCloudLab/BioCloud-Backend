@@ -1,10 +1,7 @@
 FROM node:carbon
 
-# Create app directory
-WORKDIR app
-
 # Install app
-COPY package*.json ./
+COPY webapp/* ./
 
 # Install app dependencies
 RUN npm install

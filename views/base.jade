@@ -1,0 +1,17 @@
+doctype
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        header
+            div.headerContainer 
+                span.title BioCloud Service
+                nav
+                    ul
+                        li 
+                            a(href="/") Home
+                        li 
+                            a(href="/createjob/scripts") Create Job
+        section#wrapper
+            block content

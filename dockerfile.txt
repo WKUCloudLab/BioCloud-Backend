@@ -1,0 +1,14 @@
+FROM node:carbon
+
+# Create app directory
+WORKDIR app
+
+# Install app
+COPY package*.json ./
+
+# Install app dependencies
+RUN npm install
+
+EXPOSE 3000
+# CMD [ "npm", "start" ]
+CMD [ "set", "DEBUG=express_example:*", "&", "npm", "start" ]

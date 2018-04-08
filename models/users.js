@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING
         }
     });
-    User.associate = (models) => {
-        User.hasMany(models.Exercise, {
-          as: 'userID',
-          foreignKey: 'userID',
+    users.associate = (models) => {
+        user.hasMany(models.Jobs, {
+          as: 'user_id',
+          foreignKey: 'user_id',
         })
       };
-      return User;
+      return users;
     };
 

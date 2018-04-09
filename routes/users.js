@@ -28,7 +28,8 @@ router.post('/upload', function(req, res, next){
        else{
          var x = JSON.parse(stringify(files));
         console.log(x.file.path);
-        fs.createReadStream(x.file.path).pipe(fs.createWriteStream('./uploads/'+x.file.name));
+	//send file to user's directory within the gluster
+        fs.createReadStream(x.file.path).pipe(fs.createWriteStream(`data/${reg.session.username}/${x.file.name}`));
         res.send(util.inspect({fields: fields, files: files}));
        }
     });

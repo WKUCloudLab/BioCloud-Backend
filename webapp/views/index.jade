@@ -37,32 +37,33 @@ block content
                 a.button.rightButton +
 
       script.
-        function ajax() {
-          alert('working');
-          
-          var formData = new FormData();
-          console.log($('#upload')[0].files[0]);
-          formData.append('file', $('#upload')[0].files[0]);
-          console.log(formData);
-          
-          $.ajax({
-            method: "POST",
-            url:"/users/upload",
-            processData:false,
-            contentType:false,
-            data: formData,
-            success:function(data){
-              console.log(data);
-              alert(data);
-            },
-            error:function(xhr, status, err){
-              console.log(err);
-            }
-          }).done(function( msg ){
-            alert( "Data Saved: " + msg );
-          });
-        };
+          function ajax() {
+            alert('working');
+            
+            var formData = new FormData();
+            var fileData = $('#upload')[0].files[0];
+            console.log(fileData);
+            formData.append("file", fileData);
+            //console.log(formData);
+            
+            $.ajax({
+              method: "POST",
+              url:"/index/upload",
+              processData:false,
+              contentType:false,
+              data: formData,
+              success:function(data){
+                console.log(data);
+                alert(data);
+              },
+              error:function(xhr, status, err){
+                console.log(err);
+              }
+            }).done(function( msg ){
+              alert( "Data Saved: " + msg );
+            });
+          };
           
       section.fileInputContainer
         input(type="file" name="upload")#upload
-      button(onclick='ajax();').button.submitButton Upload File
+      button(onclick='ajax()').button.submitButton Upload File

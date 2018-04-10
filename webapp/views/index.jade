@@ -35,6 +35,7 @@ block content
               item.jobItem Size: #{file.size}
               section.containerFooter
                 a.button.rightButton +
-                
-      section.fileInput
-        span Drop Files Here to Upload
+          
+      section.fileInputContainer
+        input(type="file")
+      button(onclick='tools.uploadFile()').button.submitButton Upload File

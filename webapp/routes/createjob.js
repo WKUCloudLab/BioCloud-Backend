@@ -6,10 +6,9 @@ const testJSON = require('../testJSON');
 
 router.get('/', function(req, res){
 
-  res.render('index', {
-    title: 'Home',
-    jobs: testJSON.jobs,
-    files: testJSON.files,
+  res.render('createjob', {
+    title: 'Create Job',
+    script: testJSON.scripts[0],
   });
 });
 

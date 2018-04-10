@@ -35,7 +35,34 @@ block content
               item.jobItem Size: #{file.size}
               section.containerFooter
                 a.button.rightButton +
+
+      script.
+        function ajax() {
+          alert('working');
+          
+          var formData = new FormData();
+          console.log($('#upload')[0].files[0]);
+          formData.append('file', $('#upload')[0].files[0]);
+          console.log(formData);
+          
+          $.ajax({
+            method: "POST",
+            url:"/users/upload",
+            processData:false,
+            contentType:false,
+            data: formData,
+            success:function(data){
+              console.log(data);
+              alert(data);
+            },
+            error:function(xhr, status, err){
+              console.log(err);
+            }
+          }).done(function( msg ){
+            alert( "Data Saved: " + msg );
+          });
+        };
           
       section.fileInputContainer
-        input(type="file")
-      button(onclick='tools.uploadFile()').button.submitButton Upload File
+        input(type="file" name="upload")#upload
+      button(onclick='ajax();').button.submitButton Upload File

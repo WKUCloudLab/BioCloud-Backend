@@ -6,57 +6,62 @@ var fs = require('fs');
 var stringify = require('json-stringify-safe');
 var router = express.Router();
 
-var DB_USER = process.env.DB_USER;
-var DB_PASS = process.env.DB_PASS;
+router.get('/', function(req, res, next){
+	var DB_USER = process.env.DB_USER;
+	var DB_PASS = process.env.DB_PASS;
 
-// -- remove after done testing --
-// currently used to feed false data until database is built
-const testJSON = require('../testJSON');
+	// -- remove after done testing --
+	// currently used to feed false data until database is built
+	const testJSON = require('../testJSON');
 
-// req.session.username = 'ChAN MAN'
-	var mysql = require('mysql');
-	var connection = mysql.createConnection({
-	  host     : '192.168.1.100',
-	  port: '6603',
-	  user     : 'jamie',
-	  password : 'poop',
-	  database : 'BioCloud',
+	// req.session.username = 'ChAN MAN'
+		var mysql = require('mysql');
+		var connection = mysql.createConnection({
+			host     : '192.168.1.100',
+			port: '6603',
+			user     : 'jamie',
+			password : 'poop',
+			database : 'BioCloud',
+		});
+
+	connection.connect(function(err) {
+		if (err) throw err;
+		console.log("Connected!");
 	});
 
-connection.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+	var jobs = [];
+	var files = [];
 
-var jobs = [];
-var sql = "SELECT * FROM jobs";
-connection.query(sql, function (err, result) {
-    if (err) throw err;
-	jobs = result;
-	console.log("Jobs: "+ JSON.stringify(jobs));
-  });
+	var sql = "SELECT * FROM jobs";
+	connection.query(sql, function (err, result) {
+		if (err) throw err;
+		jobs = result;
+		console.log("Retreived Jobs");
+		console.log("Jobs: "+ JSON.stringify(jobs));
 
-for(var x = 0; x < jobs.length; x++){
-	jobs[x].start = jobs[x].start.format('MM/DD/YYYY');
-	jobs[x].end = jobs[x].start.format('MM/DD/YYYY');
-}
+		var sql = "SELECT * FROM files";
+		connection.query(sql, function (err, result) {
+			if (err) throw err;
+			files = result;
+			console.log("Retreived Files");
+			console.log("Files: "+ JSON.stringify(files));
 
-var files = [];
-var sql = "SELECT * FROM files";
-connection.query(sql, function (err, result) {
-    if (err) throw err;
-	files = result;
-	console.log("Files: "+ JSON.stringify(files));
-  });
+			connection.end();
 
-connection.end();
+			res.render('index', {
+				title: 'Home',
+				jobs: jobs,
+				files: files,
+			});
+		});
+	});
 
-router.get('/', function(req, res, next){
-  res.render('index', {
-    title: 'Home',
-    jobs: jobs,
-    files: files,
-  });
+	/*
+	for(var x = 0; x < jobs.length; x++){
+		jobs[x].start = jobs[x].start.format('MM/DD/YYYY');
+		jobs[x].end = jobs[x].start.format('MM/DD/YYYY');
+	}
+	*/
 });
 
 router.post('/upload', function(req, res, next){

@@ -29,7 +29,8 @@ router.get('/', function(req, res){
   connection.query(sql, function (err, result) {
       if (err) throw err;
     files = result;
-    console.log("Files: "+ JSON.stringify(files));
+    console.log("Retreived Files");
+    //console.log("Files: "+ JSON.stringify(files));
 
     connection.end();
 
@@ -42,9 +43,11 @@ router.get('/', function(req, res){
 });
 
 router.post('/sendjob', function(req, res){
-  console.log('recieving job');
+  var scriptName = JSON.parse(req.body).script;
+  var fileName = JSON.parse(req.body).file;
 
-  console.log(req.data);
+  console.log("Script :" + scriptName);
+  console.log("File :" + fileName);
 
       // create new job entry in database
 			var DB_USER = process.env.DB_USER;
@@ -66,9 +69,8 @@ router.post('/sendjob', function(req, res){
 			});
 
 			var date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-			var sql = "INSERT INTO files (name, status, start, end, next_job, script_id, user_id, pipeline_id, commands)" +
-				" VALUES ('Test Job', 'INPROCESS', '"+date+"', '"+null+"', '"+null+"', 'FastQC', '0000', 'null', 'null')";
-			console.log(sql);
+			var sql = "INSERT INTO jobs (name, status, start, end, next_job, script_id, user_id, pipeline_id, commands)" +
+				" VALUES ('Test Job', 'INPROCESS', '"+date+"', "+null+", "+null+", 'FastQC', '0000', null, null)";
 			connection.query(sql, function (err, result) {
 				if (err) throw err;
 				console.log("Successful!");

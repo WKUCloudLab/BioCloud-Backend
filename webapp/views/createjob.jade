@@ -68,7 +68,6 @@ block content
             script.
                 function ajax() {
                     var inputFile = document.getElementById("inputFile");
-                    alert(inputFile.options[inputFile.selectedIndex].value);
 
                     var jobData = {
                         "script": "fastqc",
@@ -78,11 +77,9 @@ block content
                     $.ajax({
                         method: "POST",
                         url:"createjob/sendjob",
-                        processData:false,
-                        contentType:false,
-                        body: jobData,
+                        contentType: "application/json",
+                        data: JSON.stringify(jobData),
                         success:function(data){
-                            console.log(data);
                             console.log(data);
                         },
                         error:function(xhr, status, err){

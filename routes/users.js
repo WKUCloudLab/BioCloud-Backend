@@ -3,7 +3,7 @@ var formidable = require('formidable');
 var http = require('http');
 var util = require('util');
 var fs = require('fs');
-var stringify = require('json-stringify-safe');
+// var stringify = require('json-stringify-safe');
 var router = express.Router();
 
 /* GET users listing. */
@@ -26,7 +26,7 @@ router.post('/upload', function(req, res, next){
          res.send('Error uploading file')
        }
        else{
-         var x = JSON.parse(stringify(files));
+         var x = JSON.parse(JSON.stringify(files));
         console.log(x.file.path);
 	//send file to user's directory within the gluster
         fs.createReadStream(x.file.path).pipe(fs.createWriteStream(`data/${reg.session.username}/${x.file.name}`));

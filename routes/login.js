@@ -1,6 +1,6 @@
 var express = require('express');
 var fs = require('fs');
-var stringify = require('json-stringify-safe');
+// var stringify = require('json-stringify-safe');
 var router = express.Router();
 
 var DB_USER = process.env.DB_USER;
@@ -39,7 +39,7 @@ router.post('/', function(req, res){
 
 	console.log("user" + DB_USER);	
 	console.log(DB_PASS);	
-	fs.writeFile("./req.txt", stringify(req.body) , 'utf-8', function(err) {
+	fs.writeFile("./req.txt", JSON.stringify(req.body) , 'utf-8', function(err) {
 	    if(err) {
 		return console.log(err);
 	    }

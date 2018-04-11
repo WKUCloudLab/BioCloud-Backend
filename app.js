@@ -9,7 +9,7 @@ const fs = require('fs');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 var parseurl = require('parseurl');
-var stringify = require('json-stringify-safe');
+//var stringify = require('json-stringify-safe');
 var session = require('express-session');
 
 var index = require('./routes/index');

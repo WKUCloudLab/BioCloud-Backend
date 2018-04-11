@@ -38,7 +38,35 @@ block content
                                         for option in arg.options
                                             option #{option}  
 
-                            section.inputDesc #{arg.description}       
+                            section.inputDesc #{arg.description} 
+
+	    script.
+		  function ajax() {
+		    alert('working');
+		    
+		    var formData = new FormData();
+		    var fileData = $('#upload')[0].files[0];
+		    console.log(fileData);
+		    formData.append("file", fileData);
+		    //console.log(formData);
+		    
+		    $.ajax({
+		      method: "POST",
+		      url:"/createjob/sendjob",
+		      processData:false,
+		      contentType:false,
+		      data: formData,
+		      success:function(data){
+		        console.log(data);
+		        alert(data);
+		      },
+		      error:function(xhr, status, err){
+		        console.log(err);
+		      }
+		    }).done(function( msg ){
+		      alert( "Data Saved: " + msg );
+		    });
+		  };      
 
             section.containerFooter
-                a.button.submitButton Submit
+                a(onclick='ajax()').button.submitButton Submit

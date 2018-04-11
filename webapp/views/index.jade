@@ -11,13 +11,13 @@ block content
         cell
           section.container
             section.containerHeader 
-              span #{job.title}:
+              span #{job.name}:
               span.rightSpan #{job.status}
             section.containerContent
-              item.jobItem Script: #{job.script}
-              item.jobItem File: #{job.file}
+              item.jobItem Script: #{job.script_id}
+              item.jobItem --- 
               section.containerFooter
-                item.jobItem Began: #{job.began}
+                item.jobItem Began: #{job.start}
                 a.button.rightButton +
 
   section.container
@@ -44,11 +44,10 @@ block content
             var fileData = $('#upload')[0].files[0];
             console.log(fileData);
             formData.append("file", fileData);
-            //console.log(formData);
             
             $.ajax({
               method: "POST",
-              url:"/index/upload",
+              url:"/upload",
               processData:false,
               contentType:false,
               data: formData,
@@ -57,7 +56,7 @@ block content
                 alert(data);
               },
               error:function(xhr, status, err){
-                console.log(err);
+                alert(err);
               }
             }).done(function( msg ){
               alert( "Data Saved: " + msg );

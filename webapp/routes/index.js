@@ -66,41 +66,45 @@ router.post('/upload', function(req, res, next){
     if(err){
       console.log(err);
       res.send('Error uploading file')
-    } else {
+		} 
+		else 
+		{
       var x = JSON.parse(stringify(files));
       console.log(x.file.path);
 	    // send file to user's directory within the gluster
-      //fs.createReadStream(x.file.path).pipe(fs.createWriteStream(`data/test/${x.file.name}`));
-      //res.send(util.inspect({fields: fields, files: files}));
+			fs.createReadStream(x.file.path).pipe(fs.createWriteStream("/data/demoDir/"+x.file.name));
+			//fs.writeFile("/data/demoDir", x.file);
+      res.send(util.inspect({fields: fields, files: files}));
 
       // create new file entry in database
-	var DB_USER = process.env.DB_USER;
-	var DB_PASS = process.env.DB_PASS;
+			var DB_USER = process.env.DB_USER;
+			var DB_PASS = process.env.DB_PASS;
 
-	// req.session.username = 'ChAN MAN'
-	var mysql = require('mysql');
-	var connection = mysql.createConnection({
-		 host     : '192.168.1.100',
-		 port: '6603',
-		 user     : 'jamie',
-		 password : 'poop',
-		 database : 'BioCloud',
-	});
+			// req.session.username = 'ChAN MAN'
+			var mysql = require('mysql');
+			var connection = mysql.createConnection({
+				host     : '192.168.1.100',
+				port: '6603',
+				user     : 'jamie',
+				password : 'poop',
+				database : 'BioCloud',
+			});
 
-	connection.connect(function(err) {
-	  if (err) throw err;
-	  console.log("Connected!");
-	});
+			connection.connect(function(err) {
+				if (err) throw err;
+				console.log("Connected!");
+			});
 
-	var jobs = [];
-	var sql = "INSERT INTO files VALUES (user_id, job_id, name, size, created, path, filetype, locked) VALUES (";
-	sql += "0000, 0000, "+x.file.name+", "+x.file.size+", "+", 'Sometime'"+", "+x.file.path+", "+x.file.type+", "+'UNLOCKED'+")";
-	connection.query(sql, function (err, result) {
-	    if (err) throw err;
-		console.log("What");
-	  });
+			var d = new Date().toISOString().slice(0, 19).replace('T', ' ');
+			var sql = "INSERT INTO files (user_id, job_id, name, size, created, path, filetype, locked)" +
+				" VALUES ('0000', '0000', '"+x.file.name+"', '"+x.file.size+"', '"+d+"', '"+'/data/demoDir/'+x.file.name+"', 'Unknown', '"+'UNLOCKED'+"')";
+			console.log(sql);
+			connection.query(sql, function (err, result) {
+					if (err) throw err;
+				console.log("Successful!");
+				});
 
-	connection.end();
+			connection.end();
     }
   });
 });

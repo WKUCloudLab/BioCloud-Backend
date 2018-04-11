@@ -13,11 +13,36 @@ block content
                 if (command.name != null)
                     item #{command.name}
                     item #{command.description}
+                
+                section.divider
+                    section.label File
+                section.form
+                    section.inputBlock
+                        span.inputLabel File
+                        select.inputSelect(name='inputFile')#inputFile
+                            for file in files
+                                option #{file.name}  
 
                 if (command.args.required.length > 0)
                     section.divider
                         section.label Required
                     section.form
+                        for arg in command.args.optional
+                            if (arg.inputType == "boolean")
+                                section.inputBlock
+                                    span.inputLabel #{arg.name}
+                                    select.inputSelect(name=arg.id)
+                                        option true
+                                        option false
+
+                            if (arg.inputType == "selection")
+                                section.inputBlock
+                                    span.inputLabel #{arg.name}
+                                    select.inputSelect(name=arg.id)
+                                        for option in arg.options
+                                            option #{option}  
+
+                            section.inputDesc #{arg.description} 
 
                 if (command.args.optional.length > 0)
                     section.divider
@@ -40,33 +65,33 @@ block content
 
                             section.inputDesc #{arg.description} 
 
-	    script.
-		  function ajax() {
-		    alert('working');
-		    
-		    var formData = new FormData();
-		    var fileData = $('#upload')[0].files[0];
-		    console.log(fileData);
-		    formData.append("file", fileData);
-		    //console.log(formData);
-		    
-		    $.ajax({
-		      method: "POST",
-		      url:"/createjob/sendjob",
-		      processData:false,
-		      contentType:false,
-		      data: formData,
-		      success:function(data){
-		        console.log(data);
-		        alert(data);
-		      },
-		      error:function(xhr, status, err){
-		        console.log(err);
-		      }
-		    }).done(function( msg ){
-		      alert( "Data Saved: " + msg );
-		    });
-		  };      
+            script.
+                function ajax() {
+                    var inputFile = document.getElementById("inputFile");
+                    alert(inputFile.options[inputFile.selectedIndex].value);
+
+                    var jobData = {
+                        "script": "fastqc",
+                        "file":  inputFile.options[inputFile.selectedIndex].value,
+                    };
+                    
+                    $.ajax({
+                        method: "POST",
+                        url:"createjob/sendjob",
+                        processData:false,
+                        contentType:false,
+                        body: jobData,
+                        success:function(data){
+                            console.log(data);
+                            console.log(data);
+                        },
+                        error:function(xhr, status, err){
+                            console.log(err);
+                        }
+                    }).done(function( msg ){
+                        console.log( "Data Saved: " + msg );
+                    });
+                };
 
             section.containerFooter
-                a(onclick='ajax()').button.submitButton Submit
+                button(onclick='ajax()').button.submitButton Submit

@@ -17,7 +17,7 @@ block content
               item.jobItem Script: #{job.script_id}
               item.jobItem --- 
               section.containerFooter
-                item.jobItem Began: #{job.start}
+                item.jobItem Began: ---
                 a.button.rightButton +
 
   section.container
@@ -31,14 +31,14 @@ block content
             section.containerHeader 
               span #{file.name}
             section.containerContent
-              item.jobItem Uploaded: #{file.uploaded}
+              item.jobItem Uploaded: #{file.created}
               item.jobItem Size: #{file.size}
               section.containerFooter
                 a.button.rightButton +
 
       script.
           function ajax() {
-            alert('working');
+            console.log('working');
             
             var formData = new FormData();
             var fileData = $('#upload')[0].files[0];
@@ -53,13 +53,13 @@ block content
               data: formData,
               success:function(data){
                 console.log(data);
-                alert(data);
+                console.log(data);
               },
               error:function(xhr, status, err){
-                alert(err);
+                console.log(err);
               }
             }).done(function( msg ){
-              alert( "Data Saved: " + msg );
+              console.log( "Data Saved: " + msg );
             });
           };
           

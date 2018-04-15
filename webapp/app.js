@@ -1,17 +1,17 @@
-var express = require('express');
+const express = require('express');
 const app = express();
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const time_stamp = require('log-timestamp');
 const fs = require('fs');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-var parseurl = require('parseurl');
-var stringify = require('json-stringify-safe');
-var session = require('express-session');
+const parseurl = require('parseurl');
+const stringify = require('json-stringify-safe');
+const session = require('express-session');
 
 var index = require('./routes/index');
 var createjob = require('./routes/createjob');

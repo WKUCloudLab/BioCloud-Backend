@@ -1,8 +1,10 @@
-var express = require('express');
-var router = express.Router();
-const yaml = require('yamljs');
+const express = require('express');
+const router = express.Router();
+const yaml = require('js-yaml');
+const YAML = require('yamljs');
 const fs = require('fs');
 const { exec } = require('child_process');
+const util = require('util');
 
 // Remove after done testing
 const testJSON = require('../testJSON');
@@ -32,7 +34,8 @@ router.get('/', function(req, res){
   connection.query(sql, function (err, result) {
       if (err) throw err;
     files = result;
-    console.log("Files: "+ JSON.stringify(files));
+    console.log("Retreived Files");
+    //console.log("Files: "+ JSON.stringify(files));
 
     connection.end();
 
@@ -45,14 +48,19 @@ router.get('/', function(req, res){
 });
 
 router.post('/sendjob', function(req, res){
-  console.log('recieving job');
+	console.log("entry");
+	console.log(req.body);
 
-	//console.log(req.data);
+
+
+  	var scriptName = req.body.script;
+  	var fileName = req.body.file;
+	console.log(scriptName);
+	console.log(fileName);
+
        //need to make sure this name matches existing script 
-       var script = "fastqc";
-       var arr = "SAMPLE"
        var demo_directory = "/data/demoDir";
-       var bash = "#!/bin/bash\n\n"+script+" "+arr;
+       var bash = "#!/bin/bash\n\n"+scriptName+" "+fileName;
        console.log("creating bash string");
 	//save this to file system
        fs.writeFile(demo_directory+"/test.sh", bash, (err) => { 
@@ -61,30 +69,54 @@ router.post('/sendjob', function(req, res){
                console.log('bash file saved!');
        });
        //create yaml file here and then pass that as an arg to the exec command
-       yaml.load('template.yml', function(result)
-       {   
-           console.log(yaml.stringify(result, 4));
-           nativeObject = result;
-           nativeObject.metadata.name = script;
-           nativeObject.metadata.spec.spec.containers.name = [script];
-           nativeObject.metadata.spec.spec.containers.image = "chanstag/"+script;
-           nativeObject.metadata.spec.spec.containers.command = arr;
-           nativeObject.metadata.spec.spec.containers.restartPolicy = "Never"
-           nativeObject.metadata.spec.spec.containers.volumeMounts = demo_directory;
-           fs.writeFile("./template.yaml", nativeObject, (err) => { 
+	try {
+ 	 	var doc = yaml.safeLoad(fs.readFileSync('template.yaml', 'utf8'));
+  		console.log(doc);
+	} catch (e) {
+  		console.log(e);
+	}
+		var kube_command = demo_directory+"test.sh";
+	   console.log(util.inspect(doc, false, 10, true));
+           doc.metadata.name = scriptName;
+	   console.log('11111');
+           doc.spec.template.spec.containers[0].name = [scriptName];
+	   console.log('2222');
+           doc.spec.template.spec.containers[0].image = "chanstag/"+scriptName;
+	   console.log('33333');
+           doc.spec.template.spec.containers[0].command = [kube_command];
+	   console.log('44444');
+           doc.spec.template.spec.containers[0].restartPolicy = "Never"
+	   console.log('55555');
+           doc.spec.template.spec.containers[0].volumeMounts = demo_directory;
+	   console.log('66666');
+	   console.log(util.inspect(doc, false, 10, true));
+	var output =	yaml.safeDump (doc, {
+  		'styles': {
+    		'!!null': 'canonical' // dump null as ~
+  		},
+  	'sortKeys': true        // sort object keys
+	});
+        fs.writeFile("./template.yaml", output, (err) => { 
                if (err) throw err;
                
                    // success case, the file was saved
                    console.log('yaml file saved!');
-   
-           }).exec("kubectl create -f ./template.yaml", (err, stdout, stderr) => {
-               if (err) {
+  
+
+		exec("kubectl create -f ./template.yaml", (err, stdout, stderr) => {
+              	 if (err) {
                  console.error(err);
                  return;
-               }
+               	}
                console.log(stdout);
-             });
-	});
+            });
+        });
+	
+        console.log("Script :" + scriptName);
+        console.log("File :" + fileName);	 
+	
+  	console.log("Script :" + scriptName);
+  	console.log("File :" + fileName);
 
       // create new job entry in database
 			var DB_USER = process.env.DB_USER;
@@ -157,6 +189,6 @@ router.post('/sendjob', function(req, res){
              });
       })
   */    
-
+     
 
 module.exports = router;

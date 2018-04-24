@@ -1,1 +1,0 @@
-{"user":"chanstag","pass":"ubuntu14.04"}

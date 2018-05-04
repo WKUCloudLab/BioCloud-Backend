@@ -2,18 +2,22 @@ extends base
 
 block content
 
-  section.container
-        section.containerHeader 
+  section.container-full
+        section.container-header 
             span Create a New Job
-        section.containerContent
+        section.container-content
             span.header #{script.name}
             span.description #{script.description}
 
+            input.inputSelect(name='scriptId' type='hidden' value=script.id)#scriptId       
+
             for command in script.commands
                 if (command.name != null)
+                    section.divider
+                        section.label Command
                     item #{command.name}
                     item #{command.description}
-                
+
                 section.divider
                     section.label File
                 section.form
@@ -31,14 +35,14 @@ block content
                             if (arg.inputType == "boolean")
                                 section.inputBlock
                                     span.inputLabel #{arg.name}
-                                    select.inputSelect(name=arg.id)
+                                    select.inputSelect(name=command.id+arg.id)
                                         option true
                                         option false
 
                             if (arg.inputType == "selection")
                                 section.inputBlock
                                     span.inputLabel #{arg.name}
-                                    select.inputSelect(name=arg.id)
+                                    select.inputSelect(name=command.id+arg.id)
                                         for option in arg.options
                                             option #{option}  
 
@@ -52,28 +56,67 @@ block content
                             if (arg.inputType == "boolean")
                                 section.inputBlock
                                     span.inputLabel #{arg.name}
-                                    select.inputSelect(name=arg.id)
+                                    select.inputSelect(name=command.id+arg.id)
+                                        option 
                                         option true
                                         option false
 
                             if (arg.inputType == "selection")
                                 section.inputBlock
                                     span.inputLabel #{arg.name}
-                                    select.inputSelect(name=arg.id)
+                                    select.inputSelect(name=command.id+arg.id)
+                                        option 
                                         for option in arg.options
                                             option #{option}  
 
                             section.inputDesc #{arg.description} 
 
+            script var script = !{scriptString};
             script.
                 function ajax() {
+                    var commands = script['commands'];
+
+                    var scriptId = document.getElementById("scriptId");
                     var inputFile = document.getElementById("inputFile");
 
                     var jobData = {
-                        "script": "fastqc",
+                        "script": scriptId.value,
                         "file":  inputFile.options[inputFile.selectedIndex].value,
+                        "define-output":  script['define-output'],
+                        "commands": [],
                     };
-                    
+
+                    for(var x = 0; x < commands.length; x++) {
+                        var commandData = {
+                            "command": commands[x]['name'],
+                            "args": [],
+                        }
+
+                        for(var y = 0; y < commands[x]['args']['required'].length; y++) {
+                            var arg = commands[x]['args']['required'][y]['id'];
+                            var argValue = document.getElementsByName(commands[x]['id']+commands[x]['args']['required'][y]['id']);
+                            var argData = {
+                                'arg': arg,
+                                'value': argValue[0].options[argValue[0].selectedIndex].value,
+                            }
+                            commandData['args'].push(argData); 
+                        }
+
+                        for(var y = 0; y < commands[x]['args']['optional'].length; y++) {
+                            var arg = commands[x]['args']['optional'][y]['id'];
+                            var argValue = document.getElementsByName(commands[x]['id']+commands[x]['args']['optional'][y]['id']);
+                            var argData = {
+                                'arg': arg,
+                                'value': argValue[0].options[argValue[0].selectedIndex].value,
+                            }
+                            commandData['args'].push(argData); 
+                        }
+                        jobData['commands'].push(commandData); 
+                    }
+
+                    console.log(jobData);
+                    var didSucceed = false;
+
                     $.ajax({
                         method: "POST",
                         url:"createjob/sendjob",
@@ -81,12 +124,15 @@ block content
                         data: JSON.stringify(jobData),
                         success:function(data){
                             console.log(data);
+                            didSucceed = true;
                         },
                         error:function(xhr, status, err){
                             console.log(err);
                         }
                     }).done(function( msg ){
-                        console.log( "Data Saved: " + msg );
+                        if(didSucceed) {
+                            window.location.href="/homepage";
+                        }
                     });
                 };
 

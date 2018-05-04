@@ -1,0 +1,1 @@
+error: error validating "./template.json": error validating data: ValidationError(Job.spec.template.metadata.labels.0): invalid type for io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta.labels: got "map", expected "string"; if you choose to ignore these errors, turn validation off with --validate=false

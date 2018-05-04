@@ -79,8 +79,10 @@ router.get('/', isAuthenticated, function(req, res, next){
 			const date = months[current.getMonth()]+" "+days+th+" at "+hour+":"+minute+AMPM;
 			console.log(date);
 
+			// Job for jpg
+
 			var sql = 'INSERT INTO jobs (id, name, status, start, end, next_job, script_id, user_id, pipeline_id, commands)' +
-					" VALUES ('99999', '99999', 'INIT', '"+date+"', NULL, NULL, 'FastQC', '"+req.session.userId+"', NULL, 'FAKE NEWS')";
+					" VALUES ('1', '1', 'INIT', '"+date+"', NULL, NULL, 'FastQC', 'jamie', NULL, 'FAKE NEWS')";
 					
 			connection.query(sql, (err, result) => {
 				if (err) {
@@ -91,7 +93,55 @@ router.get('/', isAuthenticated, function(req, res, next){
 			});
 
 			var sql = "INSERT INTO files (user_id, job_id, name, size, created, path, filetype, locked, from_job)" +
-				" VALUES ('"+req.session.userId+"', '99999', 'pic.jpg', '1000', '"+date+"', '/data/users/jamie/pic.jpg', 'jpg', 'UNLOCKED', '99999')";
+				" VALUES ('jamie', '1', 'pic.jpg', '1000', '"+date+"', '/data/users/jamie/pic.jpg', 'jpg', 'UNLOCKED', '1')";
+
+			connection.query(sql, function (err, result) {
+				if (err){ 
+					console.log(err);
+					//res.end("Failure to retreive data from database: "+err);
+				}
+				console.log("Successful!");
+			});
+
+			// Job for txt
+
+			var sql = 'INSERT INTO jobs (id, name, status, start, end, next_job, script_id, user_id, pipeline_id, commands)' +
+					" VALUES ('2', '2', 'INIT', '"+date+"', NULL, NULL, 'FastQC', 'jamie', NULL, 'FAKE NEWS')";
+					
+			connection.query(sql, (err, result) => {
+				if (err) {
+					console.log(err);
+				}
+				console.log('Successful!');
+				//res.redirect('/'); 
+			});
+
+			var sql = "INSERT INTO files (user_id, job_id, name, size, created, path, filetype, locked, from_job)" +
+				" VALUES ('jamie', '1', 'test.txt', '1000', '"+date+"', '/data/users/jamie/text.txt', 'txt', 'UNLOCKED', '1')";
+
+			connection.query(sql, function (err, result) {
+				if (err){ 
+					console.log(err);
+					//res.end("Failure to retreive data from database: "+err);
+				}
+				console.log("Successful!");
+			});
+
+			// Job for html
+
+			var sql = 'INSERT INTO jobs (id, name, status, start, end, next_job, script_id, user_id, pipeline_id, commands)' +
+					" VALUES ('2', '2', 'INIT', '"+date+"', NULL, NULL, 'FastQC', 'jamie', NULL, 'FAKE NEWS')";
+					
+			connection.query(sql, (err, result) => {
+				if (err) {
+					console.log(err);
+				}
+				console.log('Successful!');
+				//res.redirect('/'); 
+			});
+
+			var sql = "INSERT INTO files (user_id, job_id, name, size, created, path, filetype, locked, from_job)" +
+				" VALUES ('jamie', '2', 'test.html', '1000', '"+date+"', '/data/users/jamie/test.html', 'html', 'UNLOCKED', '2')";
 
 			connection.query(sql, function (err, result) {
 				if (err){ 

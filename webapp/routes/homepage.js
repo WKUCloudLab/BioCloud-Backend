@@ -51,7 +51,6 @@ router.get('/', isAuthenticated, function(req, res, next){
 			/*
 				============================= For Testing ============================
 			*/
-
 			/*
 
 			var current = new Date();
@@ -150,12 +149,12 @@ router.get('/', isAuthenticated, function(req, res, next){
 				}
 				console.log("Successful!");
 			});
-
 			*/
 
 			/*
 				============================ For Testing ============================
 			*/
+
 
       res.render('homepage', {
 				title: 'Home',

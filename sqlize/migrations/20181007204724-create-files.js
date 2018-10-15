@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'Users',
+          key: 'id'
+        }
       },
       jobId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+            model: 'Jobs',
+            key: 'id'
+        }
       },
       name: {
         type: Sequelize.STRING
@@ -21,6 +29,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       created: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       path: {

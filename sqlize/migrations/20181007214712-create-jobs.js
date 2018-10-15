@@ -25,10 +25,18 @@ module.exports = {
         type: Sequelize.STRING
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model: "Users",
+          key: "id"
+        }
       },
       pipelineId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'Pipelines',
+          key: 'id'
+        }
       },
       commands: {
         type: Sequelize.STRING
@@ -41,7 +49,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    }, 
+    );
+
+    
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Jobs');

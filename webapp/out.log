@@ -1,0 +1,18 @@
+Error from server (AlreadyExists): error when creating "./template.json": jobs.batch "fastqc441" already exists
+Error from server (AlreadyExists): error when creating "./template.json": jobs.batch "fastqc441" already exists
+job "fastqc451" created
+job "fastqc461" created
+job "fastqc471" created
+job "fastqc68" created
+job "fastqc69" created
+job "fastqc70" created
+job "fastqc71" created
+job "fastqc72" created
+job "fastqc73" created
+job "fastqc74" created
+job "fastqc75" created
+job "fastqc76" created
+job "fastqc77" created
+job "fastqc78" created
+job "fastqc79" created
+job "fastqc80" created

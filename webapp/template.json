@@ -2,23 +2,26 @@
 	"apiVersion": "batch/v1",
 	"kind": "Job",
 	"metadata": {
-		"name": "fastqc491"
+		"name": "fastqc10000"
 	},
 	"spec": {
 		"template": {
+			"metadata": {
+				"labels": {
+					"app": "fastqc"
+				}
+			},
 			"spec": {
 				"containers": [
 					{
 						"command": [
-							"bash",
-							"-c",
-							"/data/demoDir/test.sh"
+							"/data/jamietest.sh"
 						],
 						"image": "chanstag/fastqc",
 						"name": "fastqc",
 						"volumeMounts": [
 							{
-								"mountPath": "/data/demoDir",
+								"mountPath": "/data",
 								"name": "biocloud-volume"
 							}
 						]

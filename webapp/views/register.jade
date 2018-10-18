@@ -1,0 +1,24 @@
+extends base
+
+block content
+    section.form-container
+        section.form-header Register
+        section.form-content
+            p Create your account
+            section.form-divide
+            section.log-in-container
+                form.form-signin(action="/register", method="post")
+                    if (message)
+                        p(style='color:red') #{message}
+                    label Username
+                    input.input-block-level(type="text", name="username")
+                    label Password
+                    input.input-block-level(type="password", name="password")
+                    label Confirm Password
+                    input.input-block-level(type="password", name="passwordConfirm")
+                    button.btn(type="submit") Register
+
+    section.form-container
+        section.form-content
+            p Already have an account? 
+                a(href="/") Login

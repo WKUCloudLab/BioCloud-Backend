@@ -1,0 +1,14 @@
+extends base
+
+block content
+
+  section.container-full
+    section.container-header 
+      span Jobs Output
+    section.container-content#outputcontainer
+      if (fileType == 'img')
+        img(src=jobOutput)
+      if (fileType == 'txt')
+        p #{jobOutput}
+      if (fileType == 'html')
+        div !{jobOutput}

@@ -1,0 +1,22 @@
+extends base
+
+block content
+    section.form-container
+        section.form-header Login
+        section.form-content
+            p Please fill in your credentials to login
+            section.form-divide
+            section.log-in-container
+                form.form-signin(action="/", method="post")
+                    if (message)
+                        p(style='color:red') #{message}
+                    label Username
+                    input.input-block-level(type="text", name="username")
+                    label Password
+                    input.input-block-level(type="password", name="password")
+                    button.btn(type="submit") Login
+
+    section.form-container
+        section.form-content
+            p New to BioCloud? 
+                a(href="/register") Sign Up		

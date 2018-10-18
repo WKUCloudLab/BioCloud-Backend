@@ -2,7 +2,11 @@
 Based on http://meyerweb.com/eric/thoughts/2008/01/15/resetting-again/
 Removed elements not supported in HTML5
 -----------------------------------------------------------------------------*/
-html,
+html {
+  padding: 0;
+  margin: 0;
+  background-color: #d1d1d1;
+}
 body,
 div,
 span,
@@ -81,7 +85,7 @@ section {
 cell {
   display: inline-block;
   width: calc(50% - 20px);
-  margin: 10px;
+  margin: 0 10px;
 }
 item {
   display: block;
@@ -91,7 +95,7 @@ item {
 body {
   font: 62.5%/1.5 Helvetica, Arial, "Lucida Grande", "Lucida Sans", Tahoma, Verdana, sans-serif;
   text-align: center;
-  background: #fff;
+  background: transparent;
 }
 #wrapper {
   max-width: 620px;
@@ -103,13 +107,14 @@ body {
   padding: 0;
 }
 .button {
-  background-color: #d9edf7;
-  border: 1px solid #bce8f1;
+  background-color: #B01E24;
+  border: 1px solid transparent;
+  border-color: #8c171c;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  color: #31708f;
+  color: #fff;
   text-decoration: none;
   position: relative;
   cursor: pointer;
@@ -125,22 +130,21 @@ body {
   -o-border-radius: 2px;
   border-radius: 2px;
 }
-.containerHeader {
-  position: relative;
+.container-header {
+  position: relative !important;
   width: 100%;
   padding: 5px 0;
   background-color: #f8f8f8;
-  border-bottom: 1px solid #e7e7e7;
 }
 .containerHeader span {
   padding-left: 10px;
   font-size: 14px;
 }
-.containerHeader .rightSpan {
-  position: absolute;
-  right: 0px;
+.rightSpan {    
+  position: absolute !important;
+  right: 0;
   padding-right: 10px;
-  font-size: 14px;
+  font-size: 15px;
   text-align: right;
 }
 .containerContent {
@@ -158,7 +162,7 @@ body {
   display: block;
   width: 100%;
   font-size: 18px;
-  padding: 5px 0 5px 15px;
+  padding: 5px 0 5px 5px;
 }
 .containerContent .description{
   display: block;
@@ -169,30 +173,45 @@ body {
 .containerFooter {
   position: relative;
   width: 100%;
-  min-height: 28px;
+  margin-top: 5px;
   border-top: 1px solid #e7e7e7;
 }
 .containerFooter .jobItem{
   font-size: 12px;
   color: #777;
-  width: 80%;
-  height: 20px;
-  overflow: hidden;
 }
-.containerFooter .rightButton{
+.jobFooterItem{
+  width: 80%;
+  font-size: 10px;
+  padding-top: 5px;
+  color: #777;
+  height: 22px;
+  line-height: 22px;
+}
+.containerFooter .rightButton{    
   position: absolute;
   right: 0px;
   top: 0px;
-  height: calc(100% - 10px);
-  margin: 5px;
-  padding: 0 6px;
+  margin: 5px 0;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
 }
 .fileInputContainer {
   width: calc(100% - 24px);
-  background-color: #f8f8f8;
-  border: 2px dashed #e7e7e7;
+  background-color: #dbdbdb;
+  border: 2px dashed #999;
   height: 120px;
   margin: 10px;
+  color: #222;
+}
+.uploadLabel {
+  display: block;
+  width: 100%;
+  height: 100%;    
+  text-align: center;
+  line-height: 120px;
+  font-size: 20px;
 }
 .fileInputContainer input{
   width: 100%;
@@ -234,6 +253,7 @@ body {
   border: 1px solid #e7e7e7;
   line-height: 30px;
 }
+
 .inputBlock .inputLabel {
   display: inline-block;
   max-width: 50%;
@@ -361,7 +381,7 @@ acronym {
 -----------------------------------------------------------------------------*/
 header {    
   background-color: #f8f8f8;
-  border-bottom: 1px solid #e7e7e7;
+  border-bottom: 1px solid #999;
   color: #333;
 }
 header .headerContainer {
@@ -396,21 +416,22 @@ header nav ul li {
   margin-left: 1%;
 }
 header nav ul li a {
-  background-color: #d9edf7;
-  border: 1px solid #bce8f1;
+  background-color: #B01E24;
+  border: 1px solid transparent;
+  border-color: #8c171c;
+  color: #fff;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
   display: inline-block;
   padding: 5px 15px 6px;
-  color: #31708f;
   text-decoration: none;
   position: relative;
   cursor: pointer;
 }
 header nav ul li a:hover {
-  background-color: #bce8f1;
+  background-color: #8c171c;
 }
 /* Footer
 -----------------------------------------------------------------------------*/
@@ -421,4 +442,115 @@ footer {
 }
 footer ul {
   list-style: none;
+}
+
+
+
+
+/*
+  ----- General -----
+*/
+.container-full {
+  width: 100%;;
+  margin: 10px auto;
+  background-color: #fff;
+  border: solid 1px #999;
+  border-radius: 2px;
+}
+.container-header {
+  width: calc(100% - 20px);
+  height: auto;
+  padding: 8px 10px;
+  background-color: #B01E24;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: bold;
+}
+.container-content {
+  padding: 8px 10px;
+}
+.container-content .instruction {
+  font-size: 16px;
+}
+
+.header {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+}
+.description {
+  font-size: 12px;
+}
+
+/*
+  ----- Form -----
+*/
+.form-container {
+  width: 300px;
+  margin: 10px auto;
+  background-color: #fff;
+  border: solid 1px #999;
+  border-radius: 2px;
+}
+.form-header {
+  width: calc(100% - 20px);
+  height: auto;
+  padding: 8px 10px;
+  background-color: #B01E24;
+  color: #fff;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: bold;
+}
+.form-content {
+  padding: 8px 10px;
+}
+.form-content p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+.form-divide {
+  width: 100%;
+  margin: 10px 0;
+}
+.form-content label {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.form-content input {
+  display: block;
+  width: calc(100% - 24px);
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.form-content button {
+  -webkit-appearance: button;
+  display: block;
+  color: #fff;
+  background-color: #B01E24;
+  border: 1px solid transparent;
+  border-color: #8c171c;
+  padding: 6px 12px;
+  margin: 0 auto;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  background-image: none;
+  border-radius: 4px;
+}
+.form-content button:hover {
+  background-color: #8c171c;
+  cursor: pointer;
 }

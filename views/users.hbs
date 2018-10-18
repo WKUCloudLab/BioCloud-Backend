@@ -1,0 +1,35 @@
+
+<h1>{{user}}</h1>
+<p>user {{user}} jobs </p>
+
+    <input type='file' id='upload' name='upload'> 
+    <input type='button' name='submit' onclick='ajax()'> submit
+
+
+<script> 
+    function ajax() { 
+				alert('working');
+                
+				var formData = new FormData();
+                console.log($('#upload')[0].files[0]);
+				formData.append('file', $('#upload')[0].files[0]);
+				console.log(formData);
+				$.ajax({
+					method: "POST",
+					url:"/users/upload",
+					processData:false,
+					contentType:false,
+					data: formData,
+					success:function(data){
+						console.log(data);
+						alert(data);
+					},
+					error:function(xhr, status, err){
+						console.log(err);
+					}
+				}).done(function( msg ){
+					alert( "Data Saved: " + msg );
+				});
+			};
+
+</script>

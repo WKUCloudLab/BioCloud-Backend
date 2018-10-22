@@ -38,7 +38,11 @@ module.exports = {
           key: 'id'
         }
       },
-      commands: {
+      options: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      commands:{
         type: Sequelize.STRING
       },
       createdAt: {

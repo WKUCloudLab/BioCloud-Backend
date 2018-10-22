@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
-
     getterMethods:{
       fullname(){
         return this.firstName + " " + this.lastName;
-      }
+      },
+
     },
     setterMethods: {
       fullname(value){
@@ -29,16 +29,17 @@ module.exports = (sequelize, DataTypes) => {
   });
   Users.associate = function(models) {
     // associations can be defined here
+    console.log('here6');
     Users.hasMany(models.Jobs, {
       foreignKey: "userId",
-      as: jobs
+      as: 'jobs'
     });
-
+    console.log('here7');
     Users.hasMany(models.Files, {
       foreignKey: "userId",
-      as: files
+      as: 'files'
     });
-    
+
   };
   return Users;
 };

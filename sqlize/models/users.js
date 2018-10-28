@@ -31,12 +31,12 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Users.hasMany(models.Jobs, {
       foreignKey: "userId",
-      as: jobs
+      as: 'jobs'
     });
 
     Users.hasMany(models.Files, {
       foreignKey: "userId",
-      as: files
+      as: 'files'
     });
     
   };

@@ -8,21 +8,30 @@ module.exports = (sequelize, DataTypes) => {
     start: {
       type:DataTypes.DATE,
       allowNull:false,
+      // validate:{
+      //   allowNull:{args:true, msg:"must provide a start date"}
+      // }
     },
     end: DataTypes.DATE,
     nextJob: {
       type:DataTypes.INTEGER,
       references:{
-        model: Jobs,
+        model: sequelize.Jobs,
         key:"id"
       }
     },
     scriptId: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      references: sequelize.Users
+    },
     pipelineId: DataTypes.INTEGER,
-    commands: {
+    options: {
       type: DataTypes.STRING,
       allowNull:false,
+      // validate:{
+      //   allowNull:{args:true, msg:"must enter commands list"}
+      // }
     }
   }, {});
   Jobs.associate = function(models) {
@@ -34,14 +43,14 @@ module.exports = (sequelize, DataTypes) => {
 
     });
 
-    Jobs.belongsTo(models.Pipelines, {
+    Jobs.belongsTo(models.Pipeline, {
       foreignKey: "pipelineId",
       targetKey: 'id'
     });
 
     Jobs.hasMany(models.Files,{
       foreignKey: "jobId",
-      as: files,
+      as: 'files',
     })
 
   };

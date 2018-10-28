@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     userId: { 
       type:DataTypes.INTEGER,
       references:{
-        model: Users,
+        model: sequelize.users,
         key: 'id'
       }
     },
     jobId:{
       type:DataTypes.INTEGER,
       references:{
-        model: Jobs,
+        model: sequelize.jobs,
         key: 'id'
       }
     } ,

@@ -22,11 +22,13 @@ router.post("/", passport.authenticate('localLogin', {
   failureRedirect: '/',
   failureFlash: true
 }), function(req, res, info){
-  res.render('login', {
-    title: 'Login',
-    isLoggedIn: false,
-    message: req.flash('message'),
-  });
+
+  res.setHeader()
+  // res.render('login', {
+  //   title: 'Login',
+  //   isLoggedIn: false,
+  //   message: req.flash('message'),
+  // });
 });
 
 module.exports = router;

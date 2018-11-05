@@ -1,0 +1,14 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+    body
+        form(action='/login', method='POST')
+            br
+            | username:
+            input(type='username', name='username')
+            br
+            | Password: 
+            input(type='password', name='password')
+            br
+            input(type='submit', value='Submit')

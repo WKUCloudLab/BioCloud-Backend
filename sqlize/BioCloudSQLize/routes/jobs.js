@@ -12,6 +12,29 @@ router.get('/', async function(req, res) {
     });
   });
 
+  router.get('/jobStatus', async function(req, res) {
+    if(!req.body){
+      return res.status(400).json({
+          'status':false,
+          'message':'No jobs supplied to this api route'
+        });
+  }
+  let jobStatus = await jobsController.jobGetStatus(req.body);
+
+  if(!jobStatus){
+    return res.status(400).json({
+      'status':false,
+      'message':'No job found with that ID or ID supplied was wrong'
+    });
+  }
+
+
+    res.status(200).json({
+      'status':true,
+      'message':'welcome to the jobs route!'
+    });
+  });
+
   router.post('/', async function(req, res) {
     if(!req.body){
         return res.status(400).json({
@@ -32,7 +55,8 @@ router.get('/', async function(req, res) {
 
   console.log("Opening ipc socket to middleware");
     //need to spawn kubernetes jobs here with ID
-  ipc.config.id = '3';
+  //this is  the job id
+  ipc.config.id = jobsCreated.message[0].dataValues;
 
   ipc.connectTo(
       'world',

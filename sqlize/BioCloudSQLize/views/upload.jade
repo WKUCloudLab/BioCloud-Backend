@@ -1,0 +1,10 @@
+doctype html
+html(lang='en')
+  head
+    title Simple Multer Upload Example
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+  body
+    form(action='/upload', enctype='multipart/form-data', method='post')
+      input(type='file', name='upload')
+      input(type='submit', value='Upload')

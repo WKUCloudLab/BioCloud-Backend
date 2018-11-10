@@ -1,18 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const ipc=require('node-ipc');
+var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
 
 
 const jobsController = require('../../controllers/jobsController');
 
-router.get('/', async function(req, res) {
+router.get('/', isAuthenticated, async function(req, res) {
     res.status(200).json({
       'status':true,
       'message':'welcome to the jobs route!'
     });
   });
 
-  router.get('/jobStatus', async function(req, res) {
+  router.get('/jobStatus', isAuthenticated,  async function(req, res) {
     if(!req.body){
       return res.status(400).json({
           'status':false,
@@ -35,7 +36,7 @@ router.get('/', async function(req, res) {
     });
   });
 
-  router.post('/', async function(req, res) {
+  router.post('/', isAuthenticated, async function(req, res) {
     if(!req.body){
         return res.status(400).json({
             'status':false,
@@ -56,7 +57,7 @@ router.get('/', async function(req, res) {
   console.log("Opening ipc socket to middleware");
     //need to spawn kubernetes jobs here with ID
   //this is  the job id
-  ipc.config.id = jobsCreated.message[0].dataValues;
+  ipc.config.id = jobsCreated.message[0].dataValues.id;
 
   ipc.connectTo(
       'world',

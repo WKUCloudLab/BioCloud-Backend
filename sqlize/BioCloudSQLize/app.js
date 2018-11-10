@@ -16,6 +16,11 @@ var jobsRouter = require('./routes/jobs');
 var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var uploadRouter = require('./routes/upload');
+var logoutRouter = require('./routes/logout');
+
+//these are temp going to delete
+var homepageRouter = require('./routes/homepage');
+var anotherpageRouter = require('./routes/anotherpage');
 
 var loginController = require('../controllers/loginController');
 
@@ -29,7 +34,7 @@ app.set('view engine', 'jade');
 // res.set('Access-Control-Allow-Origin', '192.168.1.100');
 // res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 app.use(cors());
-app.use(express.json());
+// app.use(express.json());
 //app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,10 +62,14 @@ passport.use(new LocalStrategy(
     //   return done(null, user);
     // });
       //might have to dehash the password here
+      console.log(username, password);
        let user = await loginController.login(username, password);
-       console.log(user)
-       if(user.status == "success"){
+      //  console.log(user)
+       if(user.status == true){
          done(null, user.message);
+       }
+       else{
+         return done(null, false, {message: user.message})
        }
 
   }
@@ -70,8 +79,10 @@ passport.serializeUser(function(user, done) {
   done(null, user.username);
 });
 
-passport.deserializeUser(async function(id, done) {
-  let user = await loginController.login(username, password);
+passport.deserializeUser(async function(username, done) {
+  // console.log("deserialize user ", username)
+  let user = await loginController.deserialize(username);
+  // console.log('deserialize', user);
   if(user.status == "success"){
     done(null, user.message);
   }
@@ -83,6 +94,14 @@ app.use('/users', usersRouter);
 app.use('/upload', uploadRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
+app.use('/logout', logoutRouter );
+
+
+
+app.use('/homepage', homepageRouter);
+app.use('/anotherpage', anotherpageRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

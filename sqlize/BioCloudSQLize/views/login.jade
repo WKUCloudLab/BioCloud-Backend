@@ -12,3 +12,31 @@ html
             input(type='password', name='password')
             br
             input(type='submit', value='Submit')
+        a(href='./register') register
+        button(onclick='login()') login
+
+
+script.
+    function login(){
+    $.ajax({
+        method: "POST",
+        url:"/login",
+        dataType:'json',
+        data: {username: "Chanstag", password: "Poop123"},
+        success:function(data){
+            console.log(data);
+            didSucceed = true;
+        },
+        error:function(xhr, status, err){
+            console.log(err);
+        }
+    }).done(function( msg ){
+        console.log( "Data Saved: " + msg );
+        if(didSucceed) {
+            //- window.location.href = "/homepage";
+        }
+    });
+        }
+
+};
+

@@ -11,14 +11,15 @@ module.exports = {
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
    console.log(Object.keys(models.Jobs.rawAttributes)[9]);
-   let promise1 = queryInterface.changeColumn(models.Jobs.tableName,"commands" ,{ 
+   let promise1 = queryInterface.changeColumn(models.Jobs.tableName, "options" ,{ 
                   type: Sequelize.STRING,
+                  allowNull: true
               });
 
-   let promise2 = queryInterface.addColumn(models.Jobs.tableName, 'options',{ 
+   let promise2 = queryInterface.addColumn(models.Jobs.tableName, 'commands',{ 
                 type: Sequelize.STRING,
-                allowNull: false
-            })
+                allowNull: true
+            });
             console.log("undefined?")
     return Promise.all([promise1, promise2]);
   },
@@ -32,12 +33,12 @@ module.exports = {
       return queryInterface.dropTable('users');
     */
    console.log("undefined?")
-   let promise1 = queryInterface.changeColumn(models.Jobs.tableName, 'commands',{ 
+   let promise1 = queryInterface.changeColumn(models.Jobs.tableName, 'options',{ 
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   });
   console.log("undefined?")
-  let promise2 = queryInterface.removeColumn(models.Jobs.tableName, 'options')
+  let promise2 = queryInterface.removeColumn(models.Jobs.tableName, 'commands')
    return Promise.all([promise1, promise2]);
 
   }

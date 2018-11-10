@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const multer = require('multer');
+const fs = require("fs");
+var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
 
 // var username = "TEST"; // Hopefully will use session variable instead of this
 
@@ -18,11 +20,17 @@ var upload = multer({storage: storage});
 
 
 
-router.post('/', upload.single('upload'), (req, res) => {
+router.post('/', isAuthenticated,  upload.single('upload'), (req, res) => {
     console.log("stuff");
-    console.log(req.body);
+    console.log(req.body.username);
+    console.log(req.file);
     // username = req.body.username;
-    res.status(200);
+    fs.createReadStream(req.file.path).pipe(fs.createWriteStream("/data/users/" + req.session.passport.username+"/"+req.file.filename));
+    console.log("done");
+    res.status(200).json("file");
+    
+
+   
     // res.redirect('/');
 });
 

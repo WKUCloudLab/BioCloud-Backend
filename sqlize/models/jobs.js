@@ -28,10 +28,15 @@ module.exports = (sequelize, DataTypes) => {
     pipelineId: DataTypes.INTEGER,
     options: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull:true,
       // validate:{
       //   allowNull:{args:true, msg:"must enter commands list"}
       // }
+
+    },
+    commands:{
+      type: DataTypes.STRING,
+      allowNull:true,
     }
   }, {});
   Jobs.associate = function(models) {

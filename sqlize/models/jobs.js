@@ -8,24 +8,35 @@ module.exports = (sequelize, DataTypes) => {
     start: {
       type:DataTypes.DATE,
       allowNull:false,
+      // validate:{
+      //   allowNull:{args:true, msg:"must provide a start date"}
+      // }
     },
     end: DataTypes.DATE,
     nextJob: {
       type:DataTypes.INTEGER,
       references:{
-        model: sequelize.models.Jobs,
+        model: sequelize.Jobs,
         key:"id"
       }
     },
     scriptId: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      references: sequelize.Users
+    },
     pipelineId: DataTypes.INTEGER,
     options: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull:true,
+      // validate:{
+      //   allowNull:{args:true, msg:"must enter commands list"}
+      // }
+
     },
     commands:{
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull:true,
     }
   }, {});
   Jobs.associate = function(models) {
@@ -37,7 +48,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
 
     });
-    console.log('here4');
     Jobs.belongsTo(models.Pipeline, {
       foreignKey: "pipelineId",
       targetKey: 'id'

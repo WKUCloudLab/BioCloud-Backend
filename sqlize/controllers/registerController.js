@@ -1,13 +1,26 @@
-const users_model = require('../models').users;
+const users_model = require('../models').Users;
 
-module.exports = {
-    async register(username, password, email, firstname, lastname){
-        let userCreated = await users_model.create({'username': username, 'password':password, 'email':email, 'firstname':firstname, 'lastname':lastname});
+
+module.exports.register = async (username, password, email, firstname, lastname)=>{
+        if(!username || !password || !email || !firstname || !lastname){
+            return {'status': false, 'message': "missing required info"}
+        }
+        console.log("username " + username + " password " + password + " email " + email + " firstname " + firstname + " lastname " + lastname);
+        console.log(users_model);
+        let userCreated;
+        try{
+            userCreated = await users_model.create({'username': username, 'password':password, 'email':email, 'firstName':firstname, 'lastName':lastname});
+        }
+        catch(err){
+            if(err){
+                return {'status': false, 'message':"USERNAME_EMAIL_UNAVAILABLE"};
+            }
+        }
+        
         if(!userCreated){
-            return {'status': false}
+            return {'status': false, 'message':"Unable to create the account."}
         }
         else{
-            return {'status': true, 'user':userCreated};
+            return {'status': true, 'message':userCreated};
         }
     }
-}

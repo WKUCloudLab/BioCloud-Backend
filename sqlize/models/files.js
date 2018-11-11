@@ -8,14 +8,22 @@ module.exports = (sequelize, DataTypes) => {
     userId: { 
       type:DataTypes.INTEGER,
       references:{
+<<<<<<< HEAD
         model: sequelize.models.Users,
+=======
+        model: sequelize.users,
+>>>>>>> demo
         key: 'id'
       }
     },
     jobId:{
       type:DataTypes.INTEGER,
       references:{
+<<<<<<< HEAD
         model: sequelize.models.Jobs,
+=======
+        model: sequelize.jobs,
+>>>>>>> demo
         key: 'id'
       }
     } ,

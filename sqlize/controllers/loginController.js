@@ -22,5 +22,5 @@ module.exports.login =  async (username, password)=>{
         // console.log(username);
         let user = await users_model.findOne({'where': {'username':username}});
         // console.log(user);
-        return {'status': 'success', 'message': user.dataValues};
+        return {'status': true, 'message': user.dataValues};
     }

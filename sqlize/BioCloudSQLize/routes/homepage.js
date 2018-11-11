@@ -8,8 +8,8 @@ router.get('/', isAuthenticated.ensureLocalAuthenticated, function(req, res, nex
     res.render('profile', {
         title: 'Home',
         username: "chan",
-        isLoggedIn: true,
-        });
+        // isLoggedIn: true,
+    });
 
 
 });

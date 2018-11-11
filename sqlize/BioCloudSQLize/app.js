@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var session = require("express-session");
 var path = require('path');
-var cookieParser = require('cookie-parser');
+// var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cors = require('cors');
@@ -30,20 +30,14 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-// res.set('Content-Type', 'application/json');
-// res.set('Access-Control-Allow-Origin', '192.168.1.100');
-// res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 app.use(cors());
-// app.use(express.json());
-//app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static("public"));
-app.use(session({ secret: "poop" }));
+app.use(session({ secret: "poop", cookie:{} }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -76,14 +70,15 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser(function(user, done) {
+  console.log("serialize user", user);
   done(null, user.username);
 });
 
 passport.deserializeUser(async function(username, done) {
-  // console.log("deserialize user ", username)
+  console.log("deserialize user ", username)
   let user = await loginController.deserialize(username);
-  // console.log('deserialize', user);
-  if(user.status == "success"){
+  console.log('deserialize', user);
+  if(user.status){
     done(null, user.message);
   }
 });

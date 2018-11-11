@@ -13,7 +13,7 @@ router.get('/', isAuthenticated, async function(req, res) {
     });
   });
 
-  router.get('/jobStatus', isAuthenticated,  async function(req, res) {
+  router.post('/jobStatus', isAuthenticated,  async function(req, res) {
     if(!req.body){
       return res.status(400).json({
           'status':false,
@@ -29,12 +29,28 @@ router.get('/', isAuthenticated, async function(req, res) {
     });
   }
 
-
     res.status(200).json({
       'status':true,
       'message':'welcome to the jobs route!'
     });
   });
+
+  router.post('/jobList', isAuthenticated,  async function(req, res) {
+    if(!req.body){
+        return res.json({
+            'status':false,
+            'message':'NO_REQUEST_BODY_PROVIDED'
+        });
+    }
+    if(!req.body.username){
+        return res.json({
+            'status':false,
+            'message':'NO_USERNAME_PROVIDED'
+        });
+    }
+    let jobStatus = await jobsController.getJobsList(req.body.username);
+
+});
 
   router.post('/', isAuthenticated, async function(req, res) {
     if(!req.body){

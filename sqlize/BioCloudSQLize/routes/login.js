@@ -7,7 +7,7 @@ router.post('/',
    function(req, res, next) {
      console.log(req.body);
     passport.authenticate('local', function(err, user, info) {
-      console.log(user);
+      console.log("user in authenticate ", user);
         if (err) { return next(err); }
         if (!user) { return res.json({
             'status':false,
@@ -15,6 +15,7 @@ router.post('/',
           }); }
         req.logIn(user, function(err) {
           if (err) { return next(err); }
+          console.log("session ", req.session);
           return res.status(200).json({
             'status':true,
             'message':"Welcome " + user.username +"!"

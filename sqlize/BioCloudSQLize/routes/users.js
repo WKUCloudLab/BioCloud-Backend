@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const usersController = require('../../controllers/usersController');
+var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
@@ -19,6 +20,11 @@ router.get('/', async function(req, res, next) {
   // res.send('respond with a resource');
 });
 
+
+router.get('/checkSession', isAuthenticated ,async function(req, res, next){
+  // console.log('isauthenticated ', req.isAuthenticated());
+  return res.json({'status':true, 'message':'USER_IS_AUTHENTICATED'});
+})
 
 router.get('/getFiles', async function(req, res, next) {
   

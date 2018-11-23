@@ -96,7 +96,7 @@ module.exports.submitJob =   (jobs) => {
        
     }
 
-    module.exports.getJobsList = async (username)=>{
+    module.exports.getJobsList = (username)=>{
         return new Promise(async (res, rej)=>{
             if(!username){
                 rej({'status':false, 'messsage':"NO_USERNAME_PROVIDED"});
@@ -104,7 +104,7 @@ module.exports.submitJob =   (jobs) => {
             }
             //this will return an aobject that looks like {'status': [true or false], message:[failure message or userId]}
             let userId = await usersController.getUserIDByUsername(username);
-           let jobsList = await jobs_model.findAll({'where': {'userId':userId.message}, 'attributes':['id', 'status', 'start', 'end', 'nextJob', 'scriptId', 'pipelineId', 'options', 'commands', 'createdAt']});
+           let jobsList = await jobs_model.findAll({'where': {'userId':userId.message}, 'attributes':['id', 'status', 'start', 'end', 'nextJob', 'scriptId', 'pipelineId', 'options', 'commands']});
         //    console.log("Jobs list", jobsList);
            if(jobsList.length == 0){
                res({'status':true, 'message':jobsList});

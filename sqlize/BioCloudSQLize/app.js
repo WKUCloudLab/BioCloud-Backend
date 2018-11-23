@@ -10,13 +10,15 @@ var passport = require('passport');
 // var LocalStrategy = require('passport-local').Strategy;
 // var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 // var JwtStrategy = require('passport-jwt').Strategy,
-//     ExtractJwt = require('passport-jwt').ExtractJwt;const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
+// ExtractJwt = require('passport-jwt').ExtractJwt;
+const jwt = require('jsonwebtoken');
+// const expressJwt = require('express-jwt');
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var jobsRouter = require('./routes/jobs');
+var filesRouter = require('./routes/files');
 var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var uploadRouter = require('./routes/upload');
@@ -42,7 +44,7 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static("public"));
-app.use(expressJwt({secret: 'BioCloud'}).unless({path: ['/login', '/register']}));
+// app.use(expressJwt({secret: 'BioCloud'}).unless({path: ['/login', '/register']}}));
 // app.use(session({ secret: "poop", cookie:{} }));
 // app.use(passport.initialize());
 // app.use(passport.session());
@@ -107,12 +109,13 @@ app.use(expressJwt({secret: 'BioCloud'}).unless({path: ['/login', '/register']})
 // });
 
 app.use('/', indexRouter);
-app.use('/createJob', jobsRouter);
+app.use('/jobs', jobsRouter);
 app.use('/users', usersRouter);
 app.use('/upload', uploadRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
-app.use('/logout', logoutRouter );
+app.use('/logout', logoutRouter);
+app.use('/files', filesRouter);
 
 
 

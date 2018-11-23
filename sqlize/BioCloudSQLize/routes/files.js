@@ -8,8 +8,8 @@ const usersController = require('../../controllers/usersController');
 
 
 
-router.get('/FilesList', async function(req, res, next) {
-  
+router.post('/filesList', async function(req, res, next) {
+    console.log("fileslist");
     let username = req.body.username
   
     let response = await usersController.getUserFiles(username);
@@ -24,3 +24,6 @@ router.get('/FilesList', async function(req, res, next) {
         });
     }
 });
+
+
+module.exports = router;

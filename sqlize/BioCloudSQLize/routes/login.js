@@ -35,8 +35,16 @@ router.post('/', async (req, res)=>{
   const body = req.body;
   let username = body.username;
   let password = body.password;
-
-  let user = await loginController.login(username, password);
+  let user = {};
+  try{
+     user = await loginController.login(username, password);
+  }
+  catch(e){
+    if(e){
+      console.log("Error ", e);
+      return res.send({'status':false, 'message':'ERROR'});
+    }
+  }
    console.log(user)
        if(user.status == true){
         var token = jwt.sign({userID: user.id}, 'BioCloud', {expiresIn: '2h'});

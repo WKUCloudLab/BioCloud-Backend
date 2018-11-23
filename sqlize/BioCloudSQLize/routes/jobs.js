@@ -44,17 +44,36 @@ router.get('/', async function(req, res) {
             'message':'NO_REQUEST_BODY_PROVIDED'
         });
     }
-    if(!req.body.username){
+    if(!req.body.token && req.body.username){
         return res.json({
             'status':false,
             'message':'NO_USERNAME_PROVIDED'
         });
     }
-    let jobStatus = await jobsController.getJobsList(req.body.username);
+    try{
+        let decoded = jwt.verify(req.body.token, "BioCloud");
+        // console.log(decoded);
+    }
+    catch(err){
+        // console.log(err);
+        return;
+    }
+    let jobList = {};
+    try{
+        jobList = await jobsController.getJobsList(req.body.username);
+    }
+    catch(e){
+        if(e){
+            console.log(e);
+        }
+    }
+    // console.log(jobList.message)
+    res.json({'status':true, 'message':jobList.message});
 
 });
 
-  router.post('/', async function(req, res) {
+  router.post('/create', async function(req, res) {
+      console.log("Create Job");
     if(!req.body){
         return res.status(400).json({
             'status':false,
@@ -62,7 +81,17 @@ router.get('/', async function(req, res) {
           });
     }
     console.log(`Request body ${req.body}`);
-    let jobsCreated = await jobsController.submitJob(req.body);
+    let jobsCreated = {}
+    try{
+        jobsCreated = await jobsController.submitJob(req.body);
+    }
+    catch(e){
+        if(e){
+            console.log(e);
+            return
+        }
+    }
+    console.log("jobsCreated", jobsCreated);
     if(!jobsCreated){
         return res.status(200).json({
             'status':false,

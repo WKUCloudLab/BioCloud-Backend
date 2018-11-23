@@ -1,19 +1,21 @@
 var express = require('express');
 var router = express.Router();
 const ipc=require('node-ipc');
-var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
+// var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
+const jwt = require('jsonwebtoken');
 
 
 const jobsController = require('../../controllers/jobsController');
 
-router.get('/', isAuthenticated, async function(req, res) {
+router.get('/', async function(req, res) {
+    let jwt =  jwt.verify(req.body.token, 'shhhhh');
     res.status(200).json({
       'status':true,
       'message':'welcome to the jobs route!'
     });
   });
 
-  router.post('/jobStatus', isAuthenticated,  async function(req, res) {
+  router.post('/jobStatus',  async function(req, res) {
     if(!req.body){
       return res.status(400).json({
           'status':false,
@@ -35,7 +37,7 @@ router.get('/', isAuthenticated, async function(req, res) {
     });
   });
 
-  router.post('/jobList', isAuthenticated,  async function(req, res) {
+  router.post('/jobsList',  async function(req, res) {
     if(!req.body){
         return res.json({
             'status':false,
@@ -52,7 +54,7 @@ router.get('/', isAuthenticated, async function(req, res) {
 
 });
 
-  router.post('/', isAuthenticated, async function(req, res) {
+  router.post('/', async function(req, res) {
     if(!req.body){
         return res.status(400).json({
             'status':false,

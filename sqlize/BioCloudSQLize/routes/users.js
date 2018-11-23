@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const usersController = require('../../controllers/usersController');
 var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
@@ -21,8 +22,9 @@ router.get('/', async function(req, res, next) {
 });
 
 
-router.get('/checkSession', isAuthenticated ,async function(req, res, next){
-  // console.log('isauthenticated ', req.isAuthenticated());
+router.get('/checkToken', async function(req, res, next){
+  var loginToken = req.headers.authentication || req.body.Token || req.headers.Bearer;
+  var decoded = jwt.verify(loginToken, 'BioCloud');
   return res.json({'status':true, 'message':'USER_IS_AUTHENTICATED'});
 })
 

@@ -13,10 +13,11 @@ module.exports.register = async (username, password, email, firstname, lastname)
         }
         catch(err){
             if(err){
+                console.log("Error creating user", err);
                 return {'status': false, 'message':"USERNAME_EMAIL_UNAVAILABLE"};
             }
         }
-        
+        console.log(userCreated);
         if(!userCreated){
             return {'status': false, 'message':"Unable to create the account."}
         }

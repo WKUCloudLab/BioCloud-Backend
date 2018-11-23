@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
-var isAuthenticated = require('../isAuthenticated');
 
-router.get('/', isAuthenticated.ensureLocalAuthenticated, function(req, res, next){
+
+
+router.get('/', function(req, res, next){
     console.log(req.session);
     res.render('profile', {
         title: 'Home',

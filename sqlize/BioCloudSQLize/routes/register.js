@@ -5,7 +5,6 @@ const fs = require('fs');
 const registerController = require('../../controllers/registerController');
 
 router.post('/', async function(req, res, next) {
-    
     if(!req.body){
         return res.status(400).json({'status':false, 'message': 'No register info found'})
     }
@@ -13,10 +12,11 @@ router.post('/', async function(req, res, next) {
     let register = await registerController.register(req.body.username, req.body.password, req.body.email, req.body.firstname, req.body.lastname)
 
     if(register.status == false){
+        console.log("Register returned a status of false")
         return res.json({'status':false, 'message': register.message});
     }
-
     await fs.access("/data/users/"+req.body.username, fs.constants.F_OK, async (err)=>{
+        console.log("In await");
         if(err){
             console.log(err);
             await fs.mkdir("/data/users/"+req.body.username, (err)=>{

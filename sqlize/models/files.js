@@ -8,22 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     userId: { 
       type:DataTypes.INTEGER,
       references:{
-<<<<<<< HEAD
-        model: sequelize.models.Users,
-=======
         model: sequelize.users,
->>>>>>> demo
         key: 'id'
       }
     },
     jobId:{
       type:DataTypes.INTEGER,
       references:{
-<<<<<<< HEAD
-        model: sequelize.models.Jobs,
-=======
         model: sequelize.jobs,
->>>>>>> demo
         key: 'id'
       }
     } ,
@@ -58,13 +50,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Files.associate = function(models) {
     // associations can be defined here
-    console.log("here1");
+    // console.log("here1");
     Files.belongsTo(models.Users, {
       foreignKey: 'userId',
       targetKey: 'id',
       onDelete: 'CASCADE'
     });
-    console.log("here2");
+    // console.log("here2");
     Files.belongsTo(models.Jobs, {
       foreignKey: 'jobId',
       targetKey: 'id'

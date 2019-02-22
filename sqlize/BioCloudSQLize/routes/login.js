@@ -45,9 +45,10 @@ router.post('/', async (req, res)=>{
       return res.send({'status':false, 'message':'ERROR'});
     }
   }
-   console.log(user)
+   let userDB = user.message.dataValues.firstName
+   //console.log("testing", user.message.dataValues.firstName);
        if(user.status == true){
-        var token = jwt.sign({userID: user.id}, 'BioCloud', {expiresIn: '2h'});
+        var token = jwt.sign({userID: userDB}, 'BioCloud', {expiresIn: '2h'});
          return res.send({'status':true, 'message':token});
        }
        else{

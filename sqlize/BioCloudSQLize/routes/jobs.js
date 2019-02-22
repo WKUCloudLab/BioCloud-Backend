@@ -38,21 +38,23 @@ router.get('/', async function(req, res) {
   });
 
   router.post('/jobsList',  async function(req, res) {
+    let decoded = {};
+
     if(!req.body){
         return res.json({
             'status':false,
             'message':'NO_REQUEST_BODY_PROVIDED'
         });
     }
-    if(!req.body.token && req.body.username){
+    if(!req.body.token){
         return res.json({
             'status':false,
             'message':'NO_USERNAME_PROVIDED'
         });
     }
     try{
-        let decoded = jwt.verify(req.body.token, "BioCloud");
-        // console.log(decoded);
+        decoded = jwt.verify(req.body.token, "BioCloud");
+        console.log("decoded:", decoded);
     }
     catch(err){
         // console.log(err);
@@ -60,7 +62,7 @@ router.get('/', async function(req, res) {
     }
     let jobList = {};
     try{
-        jobList = await jobsController.getJobsList(req.body.username);
+        jobList = await jobsController.getJobsList(decoded.userID);
     }
     catch(e){
         if(e){

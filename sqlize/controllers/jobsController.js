@@ -37,12 +37,16 @@ module.exports.submitJob = (req, res) => {
   })
 
   Promise.all(jobsCreated).then(jobs => {
-    waitEnqueue(jobs).then((job) => {
+    waitEnqueue(jobs).then((success) => {
         res.status(200).json({
           status: true,
           message: "Successfully created job!",
-          job: job
         })
+    }).catch(err => {
+      res.status(400).json({
+        status: false,
+        message: "Jobs failed to enqueue"
+      })
     })
   })
   .catch(err => {

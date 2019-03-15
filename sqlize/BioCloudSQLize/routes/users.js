@@ -3,7 +3,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const usersController = require('../../controllers/usersController');
-var isAuthenticated = require('../isAuthenticated').ensureLocalAuthenticated;
+var checkToken = require('../isAuthenticated').checkToken;
 
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
@@ -30,9 +30,9 @@ router.get('/checkToken', async function(req, res, next){
 
 router.get('/getFiles', async function(req, res, next) {
   
-  let username = req.body.username
-
-  let response = await usersController.getAllFiles(username);
+  //let username = req.body.username
+  let token = checkToken(req)
+  let response = await usersController.getAllFiles(token.userID);
   res.status(200).json({
     'response':response,
     'message':'Successfully retrieved all files for user' + username

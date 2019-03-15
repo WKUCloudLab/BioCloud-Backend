@@ -45,7 +45,7 @@ router.post('/', async (req, res)=>{
       return res.send({'status':false, 'message':'ERROR'});
     }
   }
-   let userDB = user.message.dataValues.firstName
+   let userDB = user.message.dataValues.username;
    //console.log("testing", user.message.dataValues.firstName);
        if(user.status == true){
         var token = jwt.sign({userID: userDB}, 'BioCloud', {expiresIn: '2h'});

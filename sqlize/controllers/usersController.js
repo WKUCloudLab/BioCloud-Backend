@@ -58,13 +58,11 @@ module.exports = {
             let userFiles={};
         try{
             //this needs to be reworked into one query for the table
-            console.log("User Files", username)
             userId = await users_model.findOne({'where':{'username':username}, attributes:['id']});
-            if(objIsEmpty(userId.dataValues)){
+	    if(objIsEmpty(userId.dataValues)){
                 rej(Error({'status': false, 'message': "NO_USER_FOUND"}));
                 return;
             }
-            console.log("getFiles: ", userId);
             userFiles = await files_model.findAll({'where':{'userId': userId.dataValues.id}, 'attributes':['id', 'path', 'name', 'size', 'jobId', 'userId', 'filetype', 'locked', 'howCreated',  'createdAt']})
         }
         catch(err){
@@ -77,10 +75,8 @@ module.exports = {
                 return;
             }
         }
-        console.log(userFiles);
         arrOfFiles = [];
         for(file of userFiles){
-            console.log(file)
             arrOfFiles.push(file.dataValues);
         }
 

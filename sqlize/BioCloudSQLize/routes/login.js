@@ -36,29 +36,31 @@ router.post('/', async (req, res)=>{
   let username = body.username;
   let password = body.password;
   let user = {};
-  try{
-     user = await loginController.login(username, password);
+
+  try {
+    user = await loginController.login(username, password);
+  } catch(e) {
+    console.log("Error ", e);
+    return res.send({
+      status: false, 
+      message: 'ERROR'
+    });
   }
-  catch(e){
-    if(e){
-      console.log("Error ", e);
-      return res.send({'status':false, 'message':'ERROR'});
-    }
+
+  let userDB = user.message.dataValues.username;
+
+  if(user.status == true) {
+    var token = jwt.sign({userID: userDB}, 'BioCloud', {expiresIn: '2h'});
+    return res.send({'status':true, 'message':token});
+  } else {
+    return res.send({'status':false, 'message':'NO_USER_FOUND'});
   }
-   let userDB = user.message.dataValues.username;
-   //console.log("testing", user.message.dataValues.firstName);
-       if(user.status == true){
-        var token = jwt.sign({userID: userDB}, 'BioCloud', {expiresIn: '2h'});
-         return res.send({'status':true, 'message':token});
-       }
-       else{
-         return res.send({'status':false, 'message':'NO_USER_FOUND'});
-       }
 });
 
-  router.get('/',
-   function(req, res, next) {
-     res.render('login');
-   })
+router.get('/',
+  function(req, res, next) {
+    res.render('login');
+  }
+);
 
-  module.exports = router;
+module.exports = router;

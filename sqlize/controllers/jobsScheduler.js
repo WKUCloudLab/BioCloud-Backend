@@ -13,8 +13,14 @@ const db = require('../models/index').db;
 // Kubernetes client
 const Client = require('kubernetes-client').Client
 const config = require('kubernetes-client').config
-const client = new Client({config: config.getInCluster()})
-await client.loadSpec();
+let client;
+try {
+  client = new Client({config: config.getInCluster()})
+}
+catch (err) {
+  console.log(err)
+}
+
 
 module.exports = {
 
@@ -24,6 +30,22 @@ module.exports = {
     pushToInProcess
     checkCompletion
   */
+
+  loadSpec(){
+    try {
+      client.loadSpec()
+      .then(() => {
+        console.log("Client loaded")
+      })
+      .catch(err => {
+        console.log("Client failed to load")
+      })
+    }
+    catch(err) {
+      console.log(err)
+    }
+
+  },
 
   waitEnqueue(jobs) {
     return new Promise((resolve, reject) => {
@@ -52,7 +74,7 @@ module.exports = {
             .then(files => {
                 files.forEach(file => {
                     if(file.path === null){
-                        continue;
+                        return;
                     }
 
                     fs.access(file.path + file.name, err => {

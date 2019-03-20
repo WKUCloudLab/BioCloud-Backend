@@ -1,47 +1,49 @@
-var createError = require('http-errors');
-var express = require('express');
+var createError = require("http-errors");
+var express = require("express");
 // var session = require("express-session");
-var path = require('path');
+var path = require("path");
 // var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var cors = require('cors');
-var passport = require('passport');
+var logger = require("morgan");
+var bodyParser = require("body-parser");
+var cors = require("cors");
+var passport = require("passport");
 // var LocalStrategy = require('passport-local').Strategy;
 // var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 // var JwtStrategy = require('passport-jwt').Strategy,
 // ExtractJwt = require('passport-jwt').ExtractJwt;
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 // const expressJwt = require('express-jwt');
-const { pushToReady, pushToInProcess, checkCompletion } = require('../controllers/jobsScheduler')
+const {
+  loadSpec,
+  pushToReady,
+  pushToInProcess,
+  checkCompletion
+} = require("../controllers/jobsScheduler");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var jobsRouter = require('./routes/jobs');
-var filesRouter = require('./routes/files');
-var registerRouter = require('./routes/register');
-var loginRouter = require('./routes/login');
-var uploadRouter = require('./routes/upload');
-var logoutRouter = require('./routes/logout');
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+var jobsRouter = require("./routes/jobs");
+var filesRouter = require("./routes/files");
+var registerRouter = require("./routes/register");
+var loginRouter = require("./routes/login");
+var uploadRouter = require("./routes/upload");
+var logoutRouter = require("./routes/logout");
 
 //these are temp going to delete
-var homepageRouter = require('./routes/homepage');
-var anotherpageRouter = require('./routes/anotherpage');
-
-
-
+var homepageRouter = require("./routes/homepage");
+var anotherpageRouter = require("./routes/anotherpage");
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 // app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger("dev"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.static("public"));
 // app.use(expressJwt({secret: 'BioCloud'}).unless({path: ['/login', '/register']}}));
@@ -77,7 +79,6 @@ app.use(express.static("public"));
 //   }
 // ));
 
-
 // var opts = {};
 
 // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -93,7 +94,6 @@ app.use(express.static("public"));
 //     }
 // }))
 
-
 // passport.serializeUser(function(user, done) {
 //   console.log("serialize user", user);
 //   done(null, user.username);
@@ -108,21 +108,17 @@ app.use(express.static("public"));
 //   }
 // });
 
-app.use('/', indexRouter);
-app.use('/jobs', jobsRouter);
-app.use('/users', usersRouter);
-app.use('/upload', uploadRouter);
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/logout', logoutRouter);
-app.use('/files', filesRouter);
+app.use("/", indexRouter);
+app.use("/jobs", jobsRouter);
+app.use("/users", usersRouter);
+app.use("/upload", uploadRouter);
+app.use("/register", registerRouter);
+app.use("/login", loginRouter);
+app.use("/logout", logoutRouter);
+app.use("/files", filesRouter);
 
-
-
-app.use('/homepage', homepageRouter);
-app.use('/anotherpage', anotherpageRouter);
-
-
+app.use("/homepage", homepageRouter);
+app.use("/anotherpage", anotherpageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -132,19 +128,25 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 module.exports = app;
 
-
-app.listen(3001, () => console.log('Example app listening on port 3001!'))
+app.listen(3001, () => console.log("Example app listening on port 3001!"));
 
 // Job scheduling
-setInterval(pushToReady(), 15000);
-setInterval(pushToInProcess(), 15000);
-setInterval(checkCompletion(), 15000);
+loadSpec();
+setInterval(() => {
+  pushToReady();
+}, 15000);
+setInterval(() => {
+  pushToInProcess();
+}, 15000);
+setInterval(() => {
+  checkCompletion();
+}, 15000);

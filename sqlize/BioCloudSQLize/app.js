@@ -43,9 +43,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "bio-cloud")));
 
-app.use(express.static("public"));
 // app.use(expressJwt({secret: 'BioCloud'}).unless({path: ['/login', '/register']}}));
 // app.use(session({ secret: "poop", cookie:{} }));
 // app.use(passport.initialize());
@@ -119,6 +118,11 @@ app.use("/files", filesRouter);
 
 app.use("/homepage", homepageRouter);
 app.use("/anotherpage", anotherpageRouter);
+
+// Catch all
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'bio-cloud/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

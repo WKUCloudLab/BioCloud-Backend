@@ -1,0 +1,43 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+            "name": "3"
+    },
+    "spec": {
+            "template": {
+                    "metadata": {
+                            "labels": {
+                                    "app": "fastqc"
+                            }
+                    },
+                    "spec": {
+                            "containers": [
+                                    {
+                                            "command": [
+                                                    "/data/demoDir/tesh.sh"
+                                            ],
+                                            "image": "chanstag/fastqc",
+                                            "name": "fastqc",
+                                            "volumeMounts": [
+                                                    {
+                                                            "mountPath": "/data",
+                                                            "name": "biocloud-volume"
+                                                    }
+                                            ]
+                                    }
+                            ],
+                            "restartPolicy": "Never",
+                            "volumes": [
+                                    {
+                                            "name": "biocloud-volume",
+                                            "hostPath":{
+                                                    "path":"/data",
+                                                    "type":"Directory"
+                                            }
+                                    }
+                            ]
+                    }
+            }
+    }
+}

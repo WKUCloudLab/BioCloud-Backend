@@ -13,7 +13,7 @@ var passport = require('passport');
 // ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken');
 // const expressJwt = require('express-jwt');
-
+const { pushToReady, pushToInProcess, checkCompletion } = require('../controllers/jobsScheduler')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -143,3 +143,8 @@ module.exports = app;
 
 
 app.listen(3001, () => console.log('Example app listening on port 3001!'))
+
+// Job scheduling
+setInterval(pushToReady(), 15000);
+setInterval(pushToInProcess(), 15000);
+setInterval(checkCompletion(), 15000);

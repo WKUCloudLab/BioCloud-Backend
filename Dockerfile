@@ -6,7 +6,8 @@ WORKDIR /BioCloud-Frontend
 RUN npm install --package-lock-only
 RUN npm run build
 WORKDIR dist
-COPY bio-cloud /code/sqlize/BioCloudSQLize
+RUN ls
+RUN cp -r bio-cloud /code/sqlize/BioCloudSQLize
 WORKDIR /code/sqlize
 RUN npm install
 WORKDIR BioCloudSQLize

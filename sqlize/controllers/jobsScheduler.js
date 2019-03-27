@@ -134,8 +134,8 @@ module.exports = {
   },
 
   pushToInProcess() {
-    if (inProcessQueue.length < 5){
-      let jobsToPush = 5 - inProcessQueue.length;
+    if (runningJobs.length < 5){
+      let jobsToPush = 5 - runningJobs.length;
       for (let index = 0; index < jobsToPush; index++) {
         if(readyQueue.length == 0){
           // Nothing to push
@@ -143,10 +143,7 @@ module.exports = {
         }
 
         readyDequeue().then(job => {
-          buildJson(job)
-          .then(job => {
-
-          })
+          submitK8s(job)
         })
       }
     }

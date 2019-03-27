@@ -9,6 +9,9 @@ module.exports.login = (username, password)=>{
         // hash(plaintextpw, saltrounds, function(err, resultingHashpw))
         bcrypt.hash(password, 11, function(err,hash) {
             console.log(password + "vs" + hash);
+            bcrypt.compare(password, hash, function(err, res){
+                console.log("res="+res);
+            });
         });
 
         if(!validUser) {

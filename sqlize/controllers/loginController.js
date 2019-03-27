@@ -1,11 +1,16 @@
 const users_model = require('../models').Users;
-
+const bcrypt = require('bcrypt');
 
 module.exports.login = (username, password)=>{
     return new Promise(async (res, rej)=>{
         console.log("login controller");
         let validUser = await users_model.findOne({'where': {'username':username}});
         
+        // hash(plaintextpw, saltrounds, function(err, resultingHashpw))
+        bcrypt.hash(password, 11, function(err,hash) {
+            console.log(password + "vs" + hash);
+        });
+
         if(!validUser) {
             res({
                 status: false, 

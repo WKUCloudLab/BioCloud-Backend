@@ -175,6 +175,8 @@ module.exports = {
           job.update({ status: 'COMPLETE', end: completionTime })
           .then(() => {
             console.log(`Job ${job.id} completed`)
+            // Destroy job
+            client.apis.v1.namespaces('default').jobs(job.id).destroy()
           })
           .catch(err => {
             console.log(err)
